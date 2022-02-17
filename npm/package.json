@@ -1,0 +1,30 @@
+{
+  "name": "svelte-cli",
+  "version": "0.1.0",
+  "description": "A CLI full of utilities for Svelte/Kit projects.",
+  "bin": {
+    "svelte": "./run.js"
+  },
+  "scripts": {
+    "postinstall": "node ./install.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theonlytails/svelte-cli.git"
+  },
+  "keywords": [
+    "cli",
+    "svelte",
+    "sveltekit"
+  ],
+  "author": "TheOnlyTails",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/theonlytails/svelte-cli/issues"
+  },
+  "homepage": "https://github.com/theonlytails/svelte-cli#readme",
+  "dependencies": {
+    "binary-install": "^0.1.1"
+  },
+  "type": "module"
+}
