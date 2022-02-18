@@ -12,6 +12,10 @@ jobs:
         include:
           - os: ubuntu-latest
             os-name: linux
+          - os: windows-latest
+            os-name: win64
+          - os: macos-latest
+            os-name: macos
 
     steps:
       - name: Checkout
