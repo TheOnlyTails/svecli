@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
       - name: Install latest rust toolchain
         uses: actions-rs/toolchain@v1
@@ -60,19 +60,47 @@ jobs:
           tag_name: ${{ steps.crate-version.outputs.app_version }}
           files: |
             builds/svelte-cli-${{ matrix.os-name }}.tar.gz
+  
+  npm_publish:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      # Setup .npmrc file to publish to npm
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+          
+      - run: cd npm
+          
+      - name: npm ci
+        run: npm ci
+      
+      - name: Publish package to npm
+        run: npm publish
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_PUBLISH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
 
-#      - name: Publish npm package
-#        env:
-#          NPM_ACCESS_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
-#        run: |
-#          echo "//registry.npmjs.org/:_authToken=$NPM_ACCESS_TOKEN" > ".npmrc"
-#          npm publish
-#
-#      - name: Publish cargo package
-#        env:
-#          CARGO_ACCESS_TOKEN: ${{ secrets.CARGO_ACCESS_TOKEN }}
-#        run: |
-#          cargo login "$CARGO_ACCESS_TOKEN"
-#          cargo publish
+  cargo_publish:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install latest rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          default: true
+          override: true
+
+      - name: Publish crate to cargo
+        uses: katyo/publish-crates@v1
+        with:
+          registry-token: ${{ secrets.CARGO_ACCESS_TOKEN }}
+          
