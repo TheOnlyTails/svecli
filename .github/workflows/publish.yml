@@ -36,9 +36,16 @@ jobs:
           cargo build --all --release
           mkdir builds
           mkdir builds/svelte-cli-${{ matrix.os-name }}
-          mv target/release/svelte-cli.exe builds/svelte-cli-${{ matrix.os-name }}
+        
+      - name: Move compiled binary to builds folder (Windows)
+        if: ${{ matrix.os-name == "win64" }}
+        run: mv target/release/svelte-cli.exe builds/svelte-cli-${{ matrix.os-name }}
+        
+      - name: Move compiled binary to builds folder (non-Windows)
+        if: ${{ matrix.os-name != "win64" }}
+        run: mv target/release/svelte-cli builds/svelte-cli-${{ matrix.os-name }}
           
-      - name: Create binary archive for Linux
+      - name: Create binary archive
         run: tar -C builds -czvf builds/svelte-cli-${{ matrix.os-name }}.tar.gz svelte-cli-${{ matrix.os-name }}
 
       - name: Get Current Version
