@@ -24,9 +24,11 @@ jobs:
 
       - name: Build
         run: |
-          cargo build --all-targets --release
+          cargo build --target=x86_64-pc-windows-gnu --release
           mkdir builds/svelte-cli-win64
+          cargo build --target=x86_64-unknown-linux-gnu --release
           mkdir builds/svelte-cli-linux
+          cargo build --target=x86_64-apple-darwin --release
           mkdir builds/svelte-cli-macos
           cp target/x86_64-pc-windows-gnu/release/svelte-cli.exe builds/svelte-cli-win64
           cp target/x86_64-unknown-linux-gnu/release/svelte-cli.exe builds/svelte-cli-linux
