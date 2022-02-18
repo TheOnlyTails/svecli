@@ -1,6 +1,9 @@
 name: publish
 
 on:
+  push:
+    tags:
+      - v*
   workflow_dispatch:
 
 jobs:
@@ -31,7 +34,6 @@ jobs:
       - name: Build
         run: |
           cargo build --all --release
-          strip target/release/svelte-cli
           mkdir builds
           mkdir builds/svelte-cli-${{ matrix.os-name }}
           mv target/release/svelte-cli builds/svelte-cli-${{ matrix.os-name }}
