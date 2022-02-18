@@ -53,7 +53,7 @@ jobs:
             dist/svelte-cli-linux.tar.gz
             dist/svelte-cli-macos.tar.gz
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_PUBLISH_TOKEN }}
 
 #      - name: Publish npm package
 #        env:
