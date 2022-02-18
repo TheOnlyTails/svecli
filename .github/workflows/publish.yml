@@ -36,7 +36,7 @@ jobs:
           cargo build --all --release
           mkdir builds
           mkdir builds/svelte-cli-${{ matrix.os-name }}
-          mv target/release/svelte-cli builds/svelte-cli-${{ matrix.os-name }}
+          mv target/release/svelte-cli.exe builds/svelte-cli-${{ matrix.os-name }}
           
       - name: Create binary archive for Linux
         run: tar -C builds -czvf builds/svelte-cli-${{ matrix.os-name }}.tar.gz svelte-cli-${{ matrix.os-name }}
