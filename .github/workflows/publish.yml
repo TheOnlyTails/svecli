@@ -4,8 +4,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-linux:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            os-name: linux
 
     steps:
       - name: Checkout
@@ -23,11 +29,11 @@ jobs:
           cargo build --all --release
           strip target/release/svelte-cli
           mkdir builds
-          mkdir builds/svelte-cli-linux
-          mv target/release/svelte-cli builds/svelte-cli-linux
+          mkdir builds/svelte-cli-${{ matrix.os-name }}
+          mv target/release/svelte-cli builds/svelte-cli-${{ matrix.os-name }}
           
       - name: Create binary archive for Linux
-        run: tar -C builds -czvf dist/svelte-cli-linux.tar.gz svelte-cli-linux
+        run: tar -C builds -czvf builds/svelte-cli-${{ matrix.os-name }}.tar.gz svelte-cli-${{ matrix.os-name }}
 
       - name: Get Current Version
         uses: dante-signal31/rust-app-version@v1.0.0
@@ -40,88 +46,7 @@ jobs:
           generate_release_notes: true
           tag_name: ${{ steps.crate-version.outputs.app_version }}
           files: |
-            dist/svelte-cli-linux.tar.gz
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_PUBLISH_TOKEN }}
-
-  build-win:
-    runs-on: windows-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Install latest rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          default: true
-          override: true
-
-      - name: Build
-        run: |
-          cargo build --all --release
-          strip target/release/svelte-cli
-          mkdir builds
-          mkdir builds/svelte-cli-win64
-          mv target/release/svelte-cli builds/svelte-cli-win64
-          
-      - name: Create binary archive for Windows
-        run: tar -C builds -czvf dist/svelte-cli-win64.tar.gz svelte-cli-win64
-
-      - name: Get Current Version
-        uses: dante-signal31/rust-app-version@v1.0.0
-        id: crate-version
-
-      - name: Upload release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          generate_release_notes: true
-          tag_name: ${{ steps.crate-version.outputs.app_version }}
-          files: |
-            dist/svelte-cli-win64.tar.gz
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_PUBLISH_TOKEN }}
-
-  build-mac:
-    runs-on: macos-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Install latest rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          target: x86_64-apple-darwin
-          default: true
-          override: true
-
-      - name: Build for mac
-        run: |
-          cargo build --all --release
-          strip target/release/svelte-cli
-          mkdir builds
-          mkdir builds/svelte-cli-macos
-          mv target/release/svelte-cli builds/svelte-cli-macos
-          
-      - name: Create binary archive for MacOS
-        run: tar -C builds -czvf dist/svelte-cli-macos.tar.gz svelte-cli-macos
-        
-      - name: Get Current Version
-        uses: dante-signal31/rust-app-version@v1.0.0
-        id: crate-version
-        
-      - name: Upload release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          generate_release_notes: true
-          tag_name: ${{ steps.crate-version.outputs.app_version }}
-          files: |
-            dist/svelte-cli-macos.tar.gz
+            builds/svelte-cli-${{ matrix.os-name }}.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_PUBLISH_TOKEN }}
 
