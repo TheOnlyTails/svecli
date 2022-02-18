@@ -17,62 +17,39 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get -y install gcc-mingw-w64-x86-64 gcc-mingw-w64-i686
+          sudo apt-get -y install gcc-mingw-w64-x86-64
           rustup target add x86_64-pc-windows-gnu
-          rustup target add i686-pc-windows-gnu
           rustup target add x86_64-unknown-linux-gnu
           rustup target add x86_64-apple-darwin
           
           mkdir dist
           mkdir builds
 
-
-      - name: Build Win64
+      - name: Build
         run: |
-          cargo rustc --release --target=x86_64-pc-windows-gnu -- -C linker=x86_64-w64-mingw32-gcc
+          cargo build --all-targets --release
           mkdir builds/svelte-cli-win64
-          cp target/x86_64-pc-windows-gnu/release/svelte-cli.exe builds/svelte-cli-win64
-          tar -C builds -czvf dist/svelte-cli-win64.tar.gz svelte-cli-win64
-
-      - name: Build Linux
-        run: |
-          cargo rustc --release --target=x86_64-unknown-linux-gnu
           mkdir builds/svelte-cli-linux
-          cp target/x86_64-unknown-linux-gnu/release/svelte-cli builds/svelte-cli-linux
-          tar -C builds -czvf dist/svelte-cli-linux.tar.gz svelte-cli-linux
-
-      - name: Cache Mac OS dependencies
-        id: cache-macos
-        uses: actions/cache@v1
-        with:
-          path: osxcross
-          key: ${{ runner.os }}-osxcross
-
-      - name: Install Mac OS dependencies
-        if: steps.cache-macos.outputs.cache-hit != 'true'
-        run: |
-          git clone https://github.com/tpoechtrager/osxcross
-          cd osxcross
-          sudo tools/get_dependencies.sh
-          wget -nc https://s3.dockerproject.org/darwin/v2/MacOSX10.10.sdk.tar.xz
-          mv MacOSX10.10.sdk.tar.xz tarballs/
-          UNATTENDED=yes OSX_VERSION_MIN=10.7 ./build.sh
-
-      - name: Build Mac OS
-        run: |
-          export PATH="$(pwd)/osxcross/target/bin:$PATH"
-          export LIBZ_SYS_STATIC=1
-          export CC=o64-clang
-          export CXX=o64-clang++
-          cargo build --release --target "x86_64-apple-darwin"
           mkdir builds/svelte-cli-macos
-          cp target/x86_64-apple-darwin/release/svelte-cli builds/svelte-cli-macos
+          cp target/x86_64-pc-windows-gnu/release/svelte-cli.exe builds/svelte-cli-win64
+          cp target/x86_64-unknown-linux-gnu/release/svelte-cli.exe builds/svelte-cli-linux
+          cp target/x86_64-apple-darwin/release/svelte-cli.exe builds/svelte-cli-macos
+          
+      - name: Create binary archives
+        run: |
+          tar -C builds -czvf dist/svelte-cli-win64.tar.gz svelte-cli-win64
+          tar -C builds -czvf dist/svelte-cli-linux.tar.gz svelte-cli-linux
           tar -C builds -czvf dist/svelte-cli-macos.tar.gz svelte-cli-macos
-
+      
+      - name: Get Current Version
+        uses: dante-signal31/rust-app-version@v1.0.0
+        id: crate-version
+      
       - name: Upload release
         uses: softprops/action-gh-release@v1
         with:
-          body_path: CHANGELOG.md
+          generate_release_notes: true
+          tag_name: ${{ steps.crate-version.outputs.app_version }}
           files: |
             dist/svelte-cli-win64.tar.gz
             dist/svelte-cli-win32.tar.gz
