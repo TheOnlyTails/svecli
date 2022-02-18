@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-linux:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,10 +22,11 @@ jobs:
         run: |
           cargo build --all --release
           strip target/release/svelte-cli
+          mkdir builds
           mkdir builds/svelte-cli-linux
           mv target/release/svelte-cli builds/svelte-cli-linux
           
-      - name: Create binary archive for Windows
+      - name: Create binary archive for Linux
         run: tar -C builds -czvf dist/svelte-cli-linux.tar.gz svelte-cli-linux
 
       - name: Get Current Version
@@ -61,6 +62,7 @@ jobs:
         run: |
           cargo build --all --release
           strip target/release/svelte-cli
+          mkdir builds
           mkdir builds/svelte-cli-win64
           mv target/release/svelte-cli builds/svelte-cli-win64
           
@@ -101,6 +103,7 @@ jobs:
         run: |
           cargo build --all --release
           strip target/release/svelte-cli
+          mkdir builds
           mkdir builds/svelte-cli-macos
           mv target/release/svelte-cli builds/svelte-cli-macos
           
