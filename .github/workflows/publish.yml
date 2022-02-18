@@ -38,11 +38,11 @@ jobs:
           mkdir builds/svelte-cli-${{ matrix.os-name }}
         
       - name: Move compiled binary to builds folder (Windows)
-        if: ${{ matrix.os-name == "win64" }}
+        if: ${{ matrix.os-name == 'win64' }}
         run: mv target/release/svelte-cli.exe builds/svelte-cli-${{ matrix.os-name }}
         
       - name: Move compiled binary to builds folder (non-Windows)
-        if: ${{ matrix.os-name != "win64" }}
+        if: ${{ matrix.os-name != 'win64' }}
         run: mv target/release/svelte-cli builds/svelte-cli-${{ matrix.os-name }}
           
       - name: Create binary archive
