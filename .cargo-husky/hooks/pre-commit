@@ -1,4 +1,4 @@
 #! /bin/sh
 
 cd npm
-npm i --package-lock-only --ignore-scripts
+npm shrinkwrap --ignore-scripts
