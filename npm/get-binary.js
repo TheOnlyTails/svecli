@@ -1,4 +1,4 @@
-const Binary = require("binary-install");
+const {Binary} = require("binary-install");
 const os = require("os");
 const {version} = require("./package.json");
 
@@ -17,7 +17,7 @@ const getBinary = () => {
     const platform = getPlatform();
     const url = `https://github.com/theonlytails/svecli/releases/download/v${version}/svecli-${platform}.tar.gz`;
     const name = "svecli";
-    return new Binary(url, {name});
+    return new Binary(name, url);
 };
 
 module.exports = getBinary;
