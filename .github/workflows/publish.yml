@@ -64,6 +64,9 @@ jobs:
   npm_publish:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
+    defaults:
+      run:
+        working-directory: ./npm
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -74,8 +77,6 @@ jobs:
         with:
           node-version: '16.x'
           registry-url: 'https://registry.npmjs.org'
-
-      - run: cd npm
 
       - name: npm i
         run: npm i --ignore-scripts
