@@ -1,19 +1,32 @@
 {
   "name": "svecli",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "svecli",
-      "version": "0.2.6",
+      "version": "0.2.7",
       "hasInstallScript": true,
       "license": "MIT",
       "dependencies": {
-        "binary-install": "^0.1.1"
+        "@cloudflare/binary-install": "^0.2.0"
       },
       "bin": {
         "svecli": "run.js"
+      }
+    },
+    "node_modules/@cloudflare/binary-install": {
+      "version": "0.2.0",
+      "resolved": "https://registry.npmjs.org/@cloudflare/binary-install/-/binary-install-0.2.0.tgz",
+      "integrity": "sha512-54n9ILgln+qUJc0BtbetEIEi1GrIL88p7ZDJy+BV8EsUqA7pMCMHAUOHjDq+YrIoqJHGJktlQJxBYB+4Umf3ww==",
+      "dependencies": {
+        "axios": "^0.21.1",
+        "rimraf": "^3.0.2",
+        "tar": "^6.0.2"
+      },
+      "engines": {
+        "node": ">=10"
       }
     },
     "node_modules/axios": {
@@ -28,19 +41,6 @@
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz",
       "integrity": "sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw=="
-    },
-    "node_modules/binary-install": {
-      "version": "0.1.1",
-      "resolved": "https://registry.npmjs.org/binary-install/-/binary-install-0.1.1.tgz",
-      "integrity": "sha512-DqED0D/6LrS+BHDkKn34vhRqOGjy5gTMgvYZsGK2TpNbdPuz4h+MRlNgGv5QBRd7pWq/jylM4eKNCizgAq3kNQ==",
-      "dependencies": {
-        "axios": "^0.21.1",
-        "rimraf": "^3.0.2",
-        "tar": "^6.1.0"
-      },
-      "engines": {
-        "node": ">=10"
-      }
     },
     "node_modules/brace-expansion": {
       "version": "1.1.11",
@@ -65,9 +65,9 @@
       "integrity": "sha1-2Klr13/Wjfd5OnMDajug1UBdR3s="
     },
     "node_modules/follow-redirects": {
-      "version": "1.14.8",
-      "resolved": "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.8.tgz",
-      "integrity": "sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==",
+      "version": "1.14.9",
+      "resolved": "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.9.tgz",
+      "integrity": "sha512-MQDfihBQYMcyy5dhRDJUHcw7lb2Pv/TuE6xP1vyraLukNDHKbDxDNaOE3NbCAdKQApno+GPRyo1YAp89yCjK4w==",
       "funding": [
         {
           "type": "individual",
@@ -235,6 +235,16 @@
     }
   },
   "dependencies": {
+    "@cloudflare/binary-install": {
+      "version": "0.2.0",
+      "resolved": "https://registry.npmjs.org/@cloudflare/binary-install/-/binary-install-0.2.0.tgz",
+      "integrity": "sha512-54n9ILgln+qUJc0BtbetEIEi1GrIL88p7ZDJy+BV8EsUqA7pMCMHAUOHjDq+YrIoqJHGJktlQJxBYB+4Umf3ww==",
+      "requires": {
+        "axios": "^0.21.1",
+        "rimraf": "^3.0.2",
+        "tar": "^6.0.2"
+      }
+    },
     "axios": {
       "version": "0.21.4",
       "resolved": "https://registry.npmjs.org/axios/-/axios-0.21.4.tgz",
@@ -247,16 +257,6 @@
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz",
       "integrity": "sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw=="
-    },
-    "binary-install": {
-      "version": "0.1.1",
-      "resolved": "https://registry.npmjs.org/binary-install/-/binary-install-0.1.1.tgz",
-      "integrity": "sha512-DqED0D/6LrS+BHDkKn34vhRqOGjy5gTMgvYZsGK2TpNbdPuz4h+MRlNgGv5QBRd7pWq/jylM4eKNCizgAq3kNQ==",
-      "requires": {
-        "axios": "^0.21.1",
-        "rimraf": "^3.0.2",
-        "tar": "^6.1.0"
-      }
     },
     "brace-expansion": {
       "version": "1.1.11",
@@ -278,9 +278,9 @@
       "integrity": "sha1-2Klr13/Wjfd5OnMDajug1UBdR3s="
     },
     "follow-redirects": {
-      "version": "1.14.8",
-      "resolved": "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.8.tgz",
-      "integrity": "sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA=="
+      "version": "1.14.9",
+      "resolved": "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.9.tgz",
+      "integrity": "sha512-MQDfihBQYMcyy5dhRDJUHcw7lb2Pv/TuE6xP1vyraLukNDHKbDxDNaOE3NbCAdKQApno+GPRyo1YAp89yCjK4w=="
     },
     "fs-minipass": {
       "version": "2.1.0",

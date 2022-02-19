@@ -1,12 +1,14 @@
 {
   "name": "svecli",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "A CLI full of utilities for Svelte/Kit projects.",
   "bin": {
     "svecli": "./run.js"
   },
   "scripts": {
-    "postinstall": "node ./install.js"
+    "postinstall": "node ./install.js",
+    "preuninstall": "node ./uninstall.js",
+    "preinstall": "node ./uninstall.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,6 @@
   },
   "homepage": "https://github.com/theonlytails/svecli#readme",
   "dependencies": {
-    "binary-install": "^0.1.1"
+    "@cloudflare/binary-install": "^0.2.0"
   }
 }
