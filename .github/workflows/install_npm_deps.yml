@@ -14,4 +14,4 @@ jobs:
       - name: Generate package-lock.json
         run: |
           cd npm
-          npm i --package-lock-only
+          npm i --package-lock-only --ignore-scripts
