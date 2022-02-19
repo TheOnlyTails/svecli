@@ -1,14 +1,13 @@
 {
   "name": "svecli",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "A CLI full of utilities for Svelte/Kit projects.",
   "bin": {
     "svecli": "./run.js"
   },
   "scripts": {
     "postinstall": "node ./install.js",
-    "preuninstall": "node ./uninstall.js",
-    "preinstall": "node ./uninstall.js"
+    "preuninstall": "node ./uninstall.js"
   },
   "repository": {
     "type": "git",
