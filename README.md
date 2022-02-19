@@ -3,5 +3,5 @@ A CLI full of utilities for Svelte/Kit projects.
 Very WIP! :warning:
 
 Includes:
-- [ ] Component generation
+- [x] Component generation
 - [ ] Endpoint generation
