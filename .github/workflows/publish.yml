@@ -76,9 +76,9 @@ jobs:
           generate_release_notes: true
           tag_name: ${{ steps.crate-version.outputs.app_version }}
           files: |
-            svecli-win64.tar.gz
-            svecli-linux.tar.gz
-            svecli-macos.tar.gz
+            svecli-win64/svecli-win64.tar.gz
+            svecli-linux/svecli-linux.tar.gz
+            svecli-macos/svecli-macos.tar.gz
 
   npm_publish:
     runs-on: ubuntu-latest
