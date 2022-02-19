@@ -19,7 +19,7 @@ fn main() {
         .to_str()
         .expect("Could not convert current directory to string, not valid UTF-8");
 
-    let cli = command!("svelte")
+    let cli = command!("svecli")
         .subcommand_required(true)
         .arg_required_else_help(true)
         .allow_external_subcommands(true)

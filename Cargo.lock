@@ -132,7 +132,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "svelte-cli"
+name = "svecli"
 version = "0.1.0"
 dependencies = [
  "cargo-husky",

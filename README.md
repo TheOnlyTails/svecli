@@ -1,4 +1,4 @@
-# svelte-cli
+# svecli
 A CLI full of utilities for Svelte/Kit projects.
 Very WIP! :warning:
 

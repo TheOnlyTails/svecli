@@ -1,9 +1,9 @@
 [package]
-name = "svelte-cli"
+name = "svecli"
 version = "0.1.0"
 description = "A CLI full of utilities for Svelte/Kit projects."
 authors = ["TheOnlyTails <theonlytails@theonlytails.com>"]
-repository = "https://github.com/theonlytails/svelte-cli"
+repository = "https://github.com/theonlytails/svecli"
 categories = ["command-line-utilities"]
 keywords = ["cli", "svelte", "sveltekit", "utilities"]
 license = "MIT"

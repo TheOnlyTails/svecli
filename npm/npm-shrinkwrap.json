@@ -1,11 +1,11 @@
 {
-  "name": "svelte-cli",
+  "name": "svecli",
   "version": "0.1.0",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
-      "name": "svelte-cli",
+      "name": "svecli",
       "version": "0.1.0",
       "hasInstallScript": true,
       "license": "MIT",
