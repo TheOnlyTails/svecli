@@ -20,4 +20,4 @@ const getBinary = () => {
     return new Binary(url, {name});
 };
 
-export default getBinary;
+module.exports = getBinary;
