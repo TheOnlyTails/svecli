@@ -1,6 +1,6 @@
 {
   "name": "svecli",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A CLI full of utilities for Svelte/Kit projects.",
   "bin": {
     "svecli": "./run.js"
