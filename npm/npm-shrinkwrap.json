@@ -13,7 +13,7 @@
         "binary-install": "^0.1.1"
       },
       "bin": {
-        "svelte": "run.js"
+        "svecli": "run.js"
       }
     },
     "node_modules/axios": {
