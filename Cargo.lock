@@ -133,11 +133,11 @@ dependencies = [
 
 [[package]]
 name = "svecli"
-version = "0.2.5"
+version = "0.2.6"
 dependencies = [
-    "cargo-husky",
-    "clap",
-    "owo-colors",
+ "cargo-husky",
+ "clap",
+ "owo-colors",
 ]
 
 [[package]]

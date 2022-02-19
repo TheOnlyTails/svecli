@@ -15,7 +15,7 @@ const getPlatform = () => {
 
 const getBinary = () => {
     const platform = getPlatform();
-    const url = `https://github.com/theonlytails/svecli/releases/download/v${version}/svecli-${platform}.tar.gz`;
+    const url = `https://github.com/theonlytails/svecli/releases/download/${version}/svecli-${platform}.tar.gz`;
     const name = "svecli";
     return new Binary(name, url);
 };
