@@ -77,8 +77,8 @@ jobs:
 
       - run: cd npm
 
-      - name: npm ci
-        run: npm ci --ignore-scripts
+      - name: npm i
+        run: npm i --ignore-scripts
 
       - name: Publish package to npm
         run: npm publish
