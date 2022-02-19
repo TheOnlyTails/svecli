@@ -1,6 +1,6 @@
-import {Binary} from "binary-install";
-import os from "os";
-import packageJson from "./package.json" assert {type: "json"};
+const Binary = require("binary-install");
+const os = require("os");
+const {version} = require("./package.json");
 
 const getPlatform = () => {
     const type = os.type();
@@ -15,7 +15,7 @@ const getPlatform = () => {
 
 const getBinary = () => {
     const platform = getPlatform();
-    const url = `https://github.com/theonlytails/svecli/releases/download/v${packageJson.version}/svecli-${platform}.tar.gz`;
+    const url = `https://github.com/theonlytails/svecli/releases/download/v${version}/svecli-${platform}.tar.gz`;
     const name = "svecli";
     return new Binary(url, {name});
 };

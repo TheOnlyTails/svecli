@@ -64,6 +64,7 @@ jobs:
   npm_publish:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
+    needs: build
     defaults:
       run:
         working-directory: ./npm
@@ -89,6 +90,7 @@ jobs:
   cargo_publish:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
+    needs: build
     steps:
       - name: Checkout
         uses: actions/checkout@v2

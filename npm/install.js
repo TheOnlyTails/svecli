@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import getBinary from "./get-binary.js";
+const getBinary = require("./get-binary.js");
 
 getBinary().install();
