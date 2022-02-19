@@ -1,3 +1,5 @@
+name: Install NPM Dependencies
+
 on:
   push:
 
