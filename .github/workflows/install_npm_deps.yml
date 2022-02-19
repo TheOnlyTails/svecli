@@ -11,8 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: cd npm
-        run: cd npm
-
       - name: Generate package-lock.json
-        run: npm i --package-lock-only
+        run: |
+          cd npm
+          npm i --package-lock-only
