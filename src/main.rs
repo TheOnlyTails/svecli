@@ -6,7 +6,11 @@ use std::path::{Path, PathBuf};
 use clap::{arg, command};
 use owo_colors::{OwoColorize, Stream::Stdout};
 
+use endpoint::endpoint_command;
+use new::new_command;
+
 mod new;
+mod endpoint;
 
 fn main() {
     let current_dir_path = if let Ok(dir) = env::current_dir() {
@@ -38,40 +42,114 @@ fn main() {
                 arg!(-f --force "overwrite existing files"),
             ])
         )
+        .subcommand(command!("endpoint")
+            .about("Creates a new SvelteKit endpoint")
+            .arg_required_else_help(true)
+            .args(&[
+                arg!(<NAME> "the name of the new endpoint").required(true),
+                arg!(-p --path "the path to the new endpoint")
+                    .default_value(current_dir),
+                arg!(--"no-get" "don't create a get endpoint"),
+                arg!(-e --extension "set the file extension for the endpoint")
+                    .default_value("json"),
+                arg!(-s --shadow "make the endpoint a shadow endpoint"),
+                arg!(--post "add a post endpoint"),
+                arg!(--put "add a put endpoint"),
+                arg!(--patch "add a patch endpoint"),
+                arg!(--delete "add a delete endpoint"),
+                arg!(-t --typescript "enable typescript"),
+                arg!(-f --force "overwrite existing files"),
+            ])
+        )
         .get_matches();
 
-    if let Some(cmd) = cli.subcommand_matches("new") {
-        let formatted_result = new::new_command(cmd);
+    match cli.subcommand() {
+        Some(("new", cmd)) => {
+            let cmd_result = new_command(cmd);
 
-        let name = cmd.value_of("NAME").unwrap();
-        let path_arg = cmd.value_of("path").unwrap();
+            let name = cmd.value_of("NAME").unwrap();
+            let path_arg = cmd.value_of("path").unwrap();
 
-        let file_path = format!(
-            "{path}{name}.svelte",
-            path = if cmd.is_present("path") && path_arg != current_dir {
-                format!("{path_arg}/")
+            let file_path = format!(
+                "{path}{name}.svelte",
+                path = if cmd.is_present("path") && path_arg != current_dir {
+                    format!("{path_arg}/")
+                } else {
+                    String::new()
+                }
+            );
+
+            if !Path::new(&file_path).exists() || cmd.is_present("force") {
+                let component_file = File::create(&file_path);
+
+                match component_file {
+                    Ok(mut created_file) => {
+                        created_file.write_all(cmd_result.as_bytes()).unwrap();
+                        println!("Created component at {}", &file_path);
+                    }
+                    Err(err) => {
+                        eprintln!("Could not create component {}.svelte", name.red());
+                        eprintln!("Path: {}", &file_path);
+                        eprintln!("Caused by {}", err);
+                    }
+                }
+            } else {
+                eprintln!(
+                    "Component {}.svelte already exists.",
+                    name.if_supports_color(Stdout, OwoColorize::red)
+                );
+            }
+        }
+        Some(("endpoint", cmd)) => {
+            let cmd_result = endpoint_command(cmd);
+
+            let name = cmd.value_of("NAME").unwrap();
+            let path_arg = cmd.value_of("path").unwrap();
+
+            let js_ext = if cmd.is_present("typescript") {
+                "ts"
+            } else {
+                "js"
+            };
+
+            let endpoint_ext = if !cmd.is_present("shadow") {
+                cmd.value_of("extension").unwrap().to_string() + "."
             } else {
                 String::new()
-            }
-        );
+            };
+            let ext = endpoint_ext + js_ext;
 
-        if !Path::new(&file_path).exists() || cmd.is_present("force") {
-            let component_file = File::create(&file_path);
+            let file_path = format!(
+                "{path}{name}.{ext}",
+                path = if cmd.is_present("path") && path_arg != current_dir {
+                    format!("{path_arg}/")
+                } else {
+                    String::new()
+                }
+            );
 
-            match component_file {
-                Ok(mut created_file) => {
-                    created_file.write_all(formatted_result.as_bytes()).unwrap();
-                    println!("Created component at {}", &file_path);
+            if !Path::new(&file_path).exists() || cmd.is_present("force") {
+                let endpoint_file = File::create(&file_path);
+
+                match endpoint_file {
+                    Ok(mut created_file) => {
+                        created_file.write_all(cmd_result.as_bytes()).unwrap();
+                        println!("Created endpoint at {}", &file_path);
+                    }
+                    Err(err) => {
+                        eprintln!("Could not create endpoint {}.{}", name.red(), ext);
+                        eprintln!("Path: {}", &file_path);
+                        eprintln!("Caused by {}", err);
+                    }
                 }
-                Err(err) => {
-                    eprintln!("Could not create component {}.svelte", name.red());
-                    eprintln!("Path: {}", &file_path);
-                    eprintln!("Caused by {}", err);
-                }
+            } else {
+                eprintln!(
+                    "Endpoint {}.{} already exists.",
+                    name.if_supports_color(Stdout, OwoColorize::red),
+                    ext
+                );
             }
-        } else {
-            eprintln!("Component {}.svelte already exists.", name
-                .if_supports_color(Stdout, OwoColorize::red));
         }
+        _ => unreachable!()
     }
 }

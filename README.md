@@ -4,4 +4,4 @@ Very WIP! :warning:
 
 Includes:
 - [x] Component generation
-- [ ] Endpoint generation
+- [x] Endpoint generation
