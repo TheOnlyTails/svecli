@@ -1,0 +1,13 @@
+on:
+  push:
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: cd npm
+        run: cd npm
+
+      - name: Generate package-lock.json
+        run: npm i --package-lock-only
