@@ -17,7 +17,7 @@ const getBinary = () => {
     const platform = getPlatform();
     const url = `https://github.com/theonlytails/svecli/releases/download/${version}/svecli-${platform}.tar.gz`;
     const name = "svecli";
-    return new Binary(name, url);
+    return new Binary(url, {name});
 };
 
 module.exports = getBinary;
