@@ -11,14 +11,20 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        os-name: [ linux, win64, macos, macos-arm ]
         include:
-          - os: ubuntu-latest
-            os-name: linux
-          - os: windows-latest
-            os-name: win64
-          - os: macos-latest
-            os-name: macos
+          - os-name: linux
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - os-name: win64
+            os: windows-latest
+            target: x86_64-pc-windows-msvc
+          - os-name: macos
+            os: macos-latest
+            target: x86_64-apple-darwin
+          - os-name: macos-arm
+            os: macos-latest
+            target: aarch64-apple-darwin
 
     steps:
       - name: Checkout
@@ -28,6 +34,7 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
+          target: ${{ matrix.target }}
           default: true
           override: true
 
@@ -80,6 +87,7 @@ jobs:
             svecli-win64/svecli-win64.tar.gz
             svecli-linux/svecli-linux.tar.gz
             svecli-macos/svecli-macos.tar.gz
+            svecli-macos-arm/svecli-macos-arm.tar.gz
 
   npm_publish:
     runs-on: ubuntu-latest
