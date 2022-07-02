@@ -1,6 +1,7 @@
 {
   "name": "svecli",
   "version": "0.3.2",
+  "readme": "../README.md",
   "description": "A CLI full of utilities for Svelte/Kit projects.",
   "bin": {
     "svecli": "./run.js"
