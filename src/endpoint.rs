@@ -1,25 +1,36 @@
 use clap::ArgMatches;
 
-pub fn endpoint_command(cmd: &ArgMatches) -> String {
+pub fn endpoint_cmd(cmd: &ArgMatches) -> String {
     let typedefs = if cmd.is_present("typescript") {
-        "import type { RequestHandler } from \"@sveltejs/kit\";\n\n"
+        let name = cmd.value_of("NAME").unwrap();
+        format!(
+            r#"import type {{ RequestHandler }} from "./{name}";
+
+"#
+        )
     } else {
-        ""
+        String::new()
     };
 
-    let endpoint = |name: &str| -> String {
+    let endpoint = |name| {
         if cmd.is_present("typescript") {
-            format!("\n\
-            \n\
-            export const {name}: RequestHandler = async () => {{\n\
-            \t\n\
-            }};")
+            format!(
+                r#"
+
+export const {name}: RequestHandler = async () => {{
+
+}};"#
+            )
         } else {
-            format!("\n\
-            /** @type {{import('@sveltejs/kit').RequestHandler}} */\n\
-            export async function {}() {{\n\
-            \t\n\
-            }};\n", name)
+            format!(
+                r#"
+/** @type {{import('./{filename}').RequestHandler}} */
+export async function {name}() {{
+
+}};
+"#,
+                filename = cmd.value_of("NAME").unwrap()
+            )
         }
     };
 
@@ -53,15 +64,17 @@ pub fn endpoint_command(cmd: &ArgMatches) -> String {
         String::new()
     };
 
-    let result = format!("{get_endpoint}\
+    let result = format!(
+        "{get_endpoint}\
      {post_endpoint}\
      {put_endpoint}\
      {patch_endpoint}\
      {delete_endpoint}\
-    ");
+    "
+    );
 
     match result.strip_prefix('\n') {
         Some(result_stripped) => String::from(typedefs) + result_stripped,
-        None => result
+        None => result,
     }
 }

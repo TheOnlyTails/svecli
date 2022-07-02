@@ -6,8 +6,8 @@ use std::path::{Path, PathBuf};
 use clap::{arg, command};
 use owo_colors::{OwoColorize, Stream::Stdout};
 
-use endpoint::endpoint_command;
-use new::new_command;
+use endpoint::endpoint_cmd;
+use new::new_cmd;
 
 mod new;
 mod endpoint;
@@ -21,7 +21,7 @@ fn main() {
 
     let current_dir = current_dir_path
         .to_str()
-        .expect("Could not convert current directory to string, not valid UTF-8");
+        .expect("Valid UTF-8 directory");
 
     let cli = command!("svecli")
         .subcommand_required(true)
@@ -33,7 +33,7 @@ fn main() {
             .about("Creates a new Svelte component")
             .arg_required_else_help(true)
             .args(&[
-                arg!(<NAME> "the name of the new component").required(true),
+                arg!(<NAME> "the name of the new component"),
                 arg!(-p --path "the path to the new component")
                     .default_value(current_dir),
                 arg!(-m --module "add a `module=\"context\"` script tag to the component"),
@@ -46,13 +46,12 @@ fn main() {
             .about("Creates a new SvelteKit endpoint")
             .arg_required_else_help(true)
             .args(&[
-                arg!(<NAME> "the name of the new endpoint").required(true),
+                arg!(<NAME> "the name of the new endpoint"),
                 arg!(-p --path "the path to the new endpoint")
                     .default_value(current_dir),
                 arg!(--"no-get" "don't create a get endpoint"),
                 arg!(-e --extension "set the file extension for the endpoint")
                     .default_value("json"),
-                arg!(-s --shadow "make the endpoint a shadow endpoint"),
                 arg!(--post "add a post endpoint"),
                 arg!(--put "add a put endpoint"),
                 arg!(--patch "add a patch endpoint"),
@@ -65,7 +64,7 @@ fn main() {
 
     match cli.subcommand() {
         Some(("new", cmd)) => {
-            let cmd_result = new_command(cmd);
+            let cmd_result = new_cmd(cmd);
 
             let name = cmd.value_of("NAME").unwrap();
             let path_arg = cmd.value_of("path").unwrap();
@@ -101,7 +100,7 @@ fn main() {
             }
         }
         Some(("endpoint", cmd)) => {
-            let cmd_result = endpoint_command(cmd);
+            let cmd_result = endpoint_cmd(cmd);
 
             let name = cmd.value_of("NAME").unwrap();
             let path_arg = cmd.value_of("path").unwrap();
@@ -112,7 +111,7 @@ fn main() {
                 "js"
             };
 
-            let endpoint_ext = if !cmd.is_present("shadow") {
+            let endpoint_ext = if !cmd.is_present("extension") {
                 cmd.value_of("extension").unwrap().to_string() + "."
             } else {
                 String::new()

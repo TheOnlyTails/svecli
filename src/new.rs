@@ -1,6 +1,6 @@
 use clap::ArgMatches;
 
-pub fn new_command(cmd: &ArgMatches) -> String {
+pub fn new_cmd(cmd: &ArgMatches) -> String {
     let lang_attr = if cmd.is_present("typescript") {
         r#" lang="ts""#
     } else {
@@ -9,10 +9,11 @@ pub fn new_command(cmd: &ArgMatches) -> String {
 
     let module_script = if cmd.is_present("module") {
         format!(
-            "<script context=\"module\"{}>\n\
-            \n\
-            </script>\
-            \n\n",
+            r#"<script context="module"{}>
+
+</script>
+
+"#,
             &lang_attr
         )
     } else {
@@ -20,19 +21,21 @@ pub fn new_command(cmd: &ArgMatches) -> String {
     };
 
     let style_tag = if cmd.is_present("style") {
-        "\n\n<style>\n\n</style>"
+        r#"
+
+<style>
+
+</style>"#
     } else {
         ""
     };
 
     format!(
-        "{module_script}\
-            <script{lang_attr}>\n\
-            \n\
-            </script>\n\
-            \n\
-            <!-- markup here -->\
-            \
-            {style_tag}",
+        r#"{module_script}\
+            <script{lang_attr}>
+
+</script>
+
+<!-- markup here -->{style_tag}"#,
     )
 }
