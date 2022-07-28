@@ -35,31 +35,31 @@ export async function {name}() {{
     };
 
     let get_endpoint = if !cmd.is_present("no-get") {
-        endpoint("get")
+        endpoint("GET")
     } else {
         String::new()
     };
 
     let post_endpoint = if cmd.is_present("post") {
-        endpoint("post")
+        endpoint("POST")
     } else {
         String::new()
     };
 
     let put_endpoint = if cmd.is_present("put") {
-        endpoint("put")
+        endpoint("PUT")
     } else {
         String::new()
     };
 
     let patch_endpoint = if cmd.is_present("patch") {
-        endpoint("patch")
+        endpoint("PATCH")
     } else {
         String::new()
     };
 
     let delete_endpoint = if cmd.is_present("delete") {
-        endpoint("delete")
+        endpoint("DELETE")
     } else {
         String::new()
     };
